@@ -20,8 +20,10 @@ def recommend_box_view(request, order_id):
 
     try:
         result = recommend_box_for_order(order)
-    except NoSuitableBoxError as e:
-        return Response({"error": str(e)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
+       except NoSuitableBoxError as e:
+        return Response(
+            {"error": str(e), "order_id": order_id},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
     serializer = BoxRecommendationSerializer(result)
     return Response(serializer.data)
